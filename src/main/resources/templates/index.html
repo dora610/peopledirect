@@ -1,14 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="base::layout(~{::section})"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PeopleDirect</title>
-</head>
-<body>
-    <section>
-        <h2 th:text="${page}"></h2>
+  </head>
+  <body>
+    <section
+      class="d-flex flex-column justify-content-center align-items-center banner"
+    >
+      <h1 th:text="${app}"></h1>
+      <h4 class="mt-2">Connecting people, connecting world</h4>
+      <p class="col-lg-6 text-center">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam architecto
+        itaque nam. Accusantium, consequuntur officia aperiam ullam suscipit
+        impedit quo! Vel quibusdam amet exercitationem optio doloremque corporis
+        beatae mollitia ipsum.
+      </p>
+        <button class="btn btn-success">Explore more</button>
     </section>
-</body>
+  </body>
 </html>

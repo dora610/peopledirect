@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
+        th:replace="base::layout(~{::section})"
+>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PeopleDirect</title>
+</head>
+<body>
+<section class="d-flex flex-column justify-content-center align-items-center banner p-4">
+        <div class="col-lg-5 col-md-6 col-sm-9 form-card rounded">
+            <h4 class="mt-2">Sign Up</h4>
+            <br/>
+            <form th:action="@{/signup}" method="post" th:object="${user}">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" th:field="*{email}">
+                    <div id="emailHelp" class="form-text text-warning text-sm">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="exampleInputPassword" th:field="*{password}">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPasswordCnfrm" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="exampleInputPasswordCnfrm">
+                </div>
+                <div class="mb-3">
+                    <label for="floatingTextarea">Bio</label>
+                    <textarea class="form-control" placeholder="Add bio" id="floatingTextarea" th:field="*{bio}"></textarea>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Terms & conditions
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <button type="reset" class="btn btn-primary">Reset</button>
+            </form>
+        </div>
+
+</section>
+</body>
+</html>
