@@ -14,7 +14,7 @@
 <section class="d-flex flex-column justify-content-center align-items-center banner p-4">
     <div class="col-lg-5 col-md-6 col-sm-9 form-card rounded">
         <h4 class="mt-2">Log In</h4>
-        <br/>
+        <hr/>
         <form th:action="@{/signin}" method="post" th:object="${user}">
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -24,9 +24,15 @@
                 <label for="exampleInputPassword" class="form-label">Password</label>
                 <input type="password" class="form-control" id="exampleInputPassword" th:field="*{password}">
             </div>
-            <button type="submit" class="btn btn-primary">Log In</button>
-            <button type="reset" class="btn btn-primary">Reset</button>
+            <div class="d-flex justify-content-center gap-2">
+                <button type="reset" class="btn btn-danger">Reset</button>
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </div>
         </form>
+        <div class="d-flex align-items-baseline justify-content-between mt-4">
+            <h6>Don't have account?</h6>
+            <a href="signup">Sign Up</a>
+        </div>
     </div>
 
 </section>

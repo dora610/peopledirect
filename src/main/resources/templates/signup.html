@@ -14,38 +14,45 @@
 <section class="d-flex flex-column justify-content-center align-items-center banner p-4">
         <div class="col-lg-5 col-md-6 col-sm-9 form-card rounded">
             <h4 class="mt-2">Sign Up</h4>
-            <br/>
+            <hr/>
             <form th:action="@{/signup}" method="post" th:object="${user}">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" th:field="*{name}">
+                    <input type="text" class="form-control" id="name" th:field="*{name}" required placeholder="name">
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" th:field="*{email}">
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required th:field="*{email}" placeholder="email">
                     <div id="emailHelp" class="form-text text-warning text-sm">We'll never share your email with anyone else.</div>
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword" th:field="*{password}">
+                    <input type="password" class="form-control" id="exampleInputPassword" required name="password">
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPasswordCnfrm" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="exampleInputPasswordCnfrm">
+                    <input type="password" class="form-control" id="exampleInputPasswordCnfrm" required name="confirm-password">
                 </div>
                 <div class="mb-3">
                     <label for="floatingTextarea">Bio</label>
                     <textarea class="form-control" placeholder="Add bio" id="floatingTextarea" th:field="*{bio}"></textarea>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="flexCheckChecked" name="agreement">
                     <label class="form-check-label" for="flexCheckChecked">
                         Terms & conditions
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
-                <button type="reset" class="btn btn-primary">Reset</button>
+                <div class="d-flex justify-content-center gap-2">
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
             </form>
+
+            <div class="d-flex align-items-baseline justify-content-between mt-4">
+                <h6>Already have account?</h6>
+                <a href="signin">Sign In</a>
+            </div>
         </div>
 
 </section>
