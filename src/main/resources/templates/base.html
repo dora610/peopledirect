@@ -42,14 +42,15 @@
     </div>
   </nav>
 
-  <div th:if="${session.message}" class="alert" th:classappend="${session.message.type}" role="alert" th:text="${session.message.msgString}">
-    A simple primary alert—check it out!
+  <div th:if="${session.message}" class="alert alert-dismissible text-center fade show" th:classappend="'alert-' + ${session.message.type}" role="alert">
+    <div th:text="${session.message.msgString}"></div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <th:block th:text="${#session.removeAttribute('message')}"></th:block>
   </div>
 
   <div th:replace="${content}"></div>
 
-    <script th:src="@{/dist/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/js/index.js}"></script>
+  <script th:src="@{/dist/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/index.js}"></script>
   </body>
 </html>
