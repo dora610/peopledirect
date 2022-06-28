@@ -19,4 +19,10 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(user);
         log.debug("saved user: {}", savedUser);
     }
+
+    @Override
+    public User getSingleUserDetails(String email, String password) throws Exception{
+        User user = userRepository.findByEmailAndPassword(email, password).orElseThrow(() -> new Exception("No such user present"));
+        return user;
+    }
 }

@@ -84,8 +84,15 @@ public class contactController {
     }
 
     @PostMapping("/signin")
-    public String addSignIn(@ModelAttribute User user) {
-        log.debug("model attribute:\n {}", user);
-        return "redirect:/signin";
+    public String addSignIn(@ModelAttribute User user, HttpSession httpSession) {
+        try {
+            User savedUser = userService.getSingleUserDetails(user.getEmail(), user.getPassword());
+            log.debug("User found: {}", savedUser);
+            httpSession.setAttribute("message", new Message("Welcome "+ savedUser.getEmail(), "success"));
+            return "redirect:/";
+        } catch (Exception e) {
+            httpSession.setAttribute("message", new Message("Error: " + e.getMessage(),  "danger"));
+            return "redirect:/signin";
+        }
     }
 }
