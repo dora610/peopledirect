@@ -1,7 +1,6 @@
 package link.karurisuro.peopledirect.entities;
 
 import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -33,7 +32,7 @@ public class User {
     @Column(length = 500)
     private String bio;
     private String role;
-    private boolean enabled;
+    private boolean isEnabled;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user_id")
     private List<Contact> contacts = new ArrayList<>();
 

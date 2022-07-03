@@ -18,7 +18,7 @@ import javax.validation.Valid;
 public class contactController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -78,12 +78,12 @@ public class contactController {
 
     @GetMapping("/signin")
     public String loadSignIn(Model model) {
-        model.addAttribute("title", "Sign Up");
+        model.addAttribute("title", "Sign In");
         model.addAttribute("user", new User());
         return "signin";
     }
 
-    @PostMapping("/signin")
+    /*@PostMapping("/signin")
     public String addSignIn(@ModelAttribute User user, HttpSession httpSession) {
         try {
             User savedUser = userService.getSingleUserDetails(user.getEmail(), user.getPassword());
@@ -94,5 +94,5 @@ public class contactController {
             httpSession.setAttribute("message", new Message("Error: " + e.getMessage(),  "danger"));
             return "redirect:/signin";
         }
-    }
+    }*/
 }
