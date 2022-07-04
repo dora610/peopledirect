@@ -8,7 +8,36 @@
 </head>
 <body>
     <section>
-        <h1>User dashboard</h1>
+        <div class="wrapper">
+            <nav class="sidebar sidebar-close">
+                <button class="close-btn">
+                    <img th:src="@{/img/close.png}" width="15px" />
+                </button>
+                <a href="/user/">Home</a>
+                <a href="">View Contacts</a>
+                <a href="/user/add-contact">Add Contact</a>
+                <a href="">Your Profile</a>
+                <a href="">Settings</a>
+                <a href="">Logout</a>
+            </nav>
+            <div class="content">
+                <button class="sidebar-open">
+                    <img th:src="@{/img/hamburger.png}" width="15px" />
+                </button>
+                <h2>Welcome to dashboard</h2>
+                <h3 th:text="${userName}"></h3>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Est debitis
+                    quas laboriosam velit reprehenderit assumenda repudiandae soluta
+                    corrupti totam tenetur.
+                </p>
+                <h3>Other content</h3>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, cum.
+                    Aperiam velit maxime voluptates voluptate.
+                </p>
+            </div>
+        </div>
     </section>
 </body>
 </html>

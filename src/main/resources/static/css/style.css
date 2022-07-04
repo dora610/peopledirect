@@ -1,9 +1,14 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
 .navbar{
     background-color: #fae8ff;
 }
 .banner{
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(../img/satnight.jpg);
-    width: 100vw;
+    /* width: 100vw; */
     min-height: 100vh;
     background-size: cover;
     color: #fff;
@@ -25,4 +30,63 @@
 
 .whitelink:hover{
     color: #fcd34d;
+}
+
+
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    min-width: 200px;
+    width: fit-content;
+    z-index: 30;
+    background-color: #e5e7eb;
+    height: 100%;
+    transform: translate(0px);
+    transition: transform .75s ease-out;
+}
+
+.sidebar a{
+    text-decoration: none;
+    color: #000;
+    font-size: 1rem;
+    padding: 15px 25px;
+}
+
+.sidebar a:hover{
+    background-color: #9ca3af;
+}
+
+.close-btn{
+    align-self: flex-end;
+    padding: 10px 10px;
+    text-align: center;
+    border: 0px;
+    background-color: rgba(255,255,255,0);
+    cursor: pointer;
+}
+
+.close-btn:hover{
+    background-color: #9ca3af;
+}
+
+.sidebar-close{
+    transform: translate(-50vw);
+    transition: transform .5s ease-in;
+}
+
+.sidebar-open{
+    padding: 5px 5px;
+    text-align: center;
+    border: 0px;
+    background-color: rgba(255,255,255,0);
+    margin-bottom: 10px;
+}
+.sidebar-open:hover{
+    background-color: #9ca3af;
+}
+
+.content{
+    padding: 10px 15px;
 }

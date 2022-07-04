@@ -26,12 +26,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getSingleUserDetails(String email, String password) throws Exception{
+    public User getSingleUserDetails(String email, String password) throws Exception {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new Exception("UserName not found!!"));
-        if(passwordEncoder.matches(password, user.getPassword())){
+        if (passwordEncoder.matches(password, user.getPassword())) {
             return user;
-        }else {
+        } else {
             throw new Exception("Incorrect password!!");
         }
     }
+
+    @Override
+    public User getUserByUserName(String email) throws Exception {
+        return userRepository.findByEmail(email).orElseThrow(() -> new Exception("No such user present!"));
+    }
+
 }

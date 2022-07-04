@@ -6,4 +6,6 @@ public interface UserService {
 
     public void saveUserDetails(User user);
     public User getSingleUserDetails(String email, String password) throws Exception;
+
+    User getUserByUserName(String email) throws Exception;
 }
