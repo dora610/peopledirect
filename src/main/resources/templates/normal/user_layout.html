@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User dashboard layout</title>
+</head>
+<body>
+    <div class="wrapper" >
+        <nav class="sidebar sidebar-close" th:fragment="sidebar">
+            <button class="close-btn">
+                <img th:src="@{/img/close.png}" width="15px" />
+            </button>
+            <a href="/user/">Home</a>
+            <a href="">View Contacts</a>
+            <a href="/user/add-contact">Add Contact</a>
+            <a href="">Your Profile</a>
+            <a href="">Settings</a>
+            <a href="">Logout</a>
+        </nav>
+        <div class="content">
+            <button class="sidebar-open" th:fragment="sidebar-open-button">
+                <img th:src="@{/img/hamburger.png}" width="15px" />
+            </button>
+            <div th:replace="${main_content}"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -9,21 +9,9 @@
 <body>
     <section>
         <div class="wrapper">
-            <nav class="sidebar sidebar-close">
-                <button class="close-btn">
-                    <img th:src="@{/img/close.png}" width="15px" />
-                </button>
-                <a href="/user/">Home</a>
-                <a href="">View Contacts</a>
-                <a href="/user/add-contact">Add Contact</a>
-                <a href="">Your Profile</a>
-                <a href="">Settings</a>
-                <a href="">Logout</a>
-            </nav>
+            <div th:replace="~{normal/user_layout :: sidebar}"></div>
             <div class="content">
-                <button class="sidebar-open">
-                    <img th:src="@{/img/hamburger.png}" width="15px" />
-                </button>
+                <div th:replace="~{normal/user_layout :: sidebar-open-button}"></div>
                 <h2>Welcome to dashboard</h2>
                 <h3 th:text="${userName}"></h3>
                 <p>
