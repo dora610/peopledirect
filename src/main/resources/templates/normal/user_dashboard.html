@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/user_layout::normal_layout(~{::div})">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,25 +7,19 @@
     <title>User dashboard</title>
 </head>
 <body>
-    <section>
-        <div class="wrapper">
-            <div th:replace="~{normal/user_layout :: sidebar}"></div>
-            <div class="content">
-                <div th:replace="~{normal/user_layout :: sidebar-open-button}"></div>
-                <h2>Welcome to dashboard</h2>
-                <h3 th:text="${userName}"></h3>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Est debitis
-                    quas laboriosam velit reprehenderit assumenda repudiandae soluta
-                    corrupti totam tenetur.
-                </p>
-                <h3>Other content</h3>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, cum.
-                    Aperiam velit maxime voluptates voluptate.
-                </p>
-            </div>
-        </div>
-    </section>
+<div class="container">
+    <h2>Welcome to dashboard</h2>
+    <h3 th:text="${userName}"></h3>
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Est debitis
+        quas laboriosam velit reprehenderit assumenda repudiandae soluta
+        corrupti totam tenetur.
+    </p>
+    <h3>Other content</h3>
+    <p>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, cum.
+        Aperiam velit maxime voluptates voluptate.
+    </p>
+</div>
 </body>
 </html>

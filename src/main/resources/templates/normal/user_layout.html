@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})"
+      th:fragment="normal_layout(main_content)">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,8 +8,9 @@
     <title>User dashboard layout</title>
 </head>
 <body>
-    <div class="wrapper" >
-        <nav class="sidebar sidebar-close" th:fragment="sidebar">
+<section>
+    <div class="wrapper">
+        <nav class="sidebar sidebar-close">
             <button class="close-btn">
                 <img th:src="@{/img/close.png}" width="15px" />
             </button>
@@ -20,11 +22,12 @@
             <a href="">Logout</a>
         </nav>
         <div class="content">
-            <button class="sidebar-open" th:fragment="sidebar-open-button">
+            <button class="sidebar-open">
                 <img th:src="@{/img/hamburger.png}" width="15px" />
             </button>
             <div th:replace="${main_content}"></div>
         </div>
     </div>
+</section>
 </body>
 </html>
