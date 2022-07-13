@@ -15,7 +15,7 @@ import javax.validation.Valid;
 
 @Controller
 @Slf4j
-public class contactController {
+public class ContactController {
 
     @Autowired
     private UserService userService;
