@@ -44,7 +44,7 @@ body{
     background-color: #e5e7eb;
     height: 100%;
     transform: translate(0px);
-    transition: transform .75s ease-out;
+    transition: transform .5s ease-out;
 }
 
 .sidebar a{

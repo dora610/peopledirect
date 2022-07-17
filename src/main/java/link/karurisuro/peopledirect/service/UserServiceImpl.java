@@ -2,6 +2,7 @@ package link.karurisuro.peopledirect.service;
 
 import link.karurisuro.peopledirect.dao.UserRepository;
 import link.karurisuro.peopledirect.entities.User;
+import link.karurisuro.peopledirect.utils.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,8 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUserName(String email) throws Exception {
-        return userRepository.findByEmail(email).orElseThrow(() -> new Exception("No such user present!"));
+    public User getUserByUserName(String email) throws NotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("No such user present!"));
     }
 
 }

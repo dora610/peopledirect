@@ -20,7 +20,6 @@ public class ContactServiceImpl implements ContactService {
     public void addContact(Contact contact, User user) {
         contact.setUser_id(user);
         contactRepository.save(contact);
-        log.debug("contact saved");
     }
 
     public List<Contact> getAllContacts(User user) {
