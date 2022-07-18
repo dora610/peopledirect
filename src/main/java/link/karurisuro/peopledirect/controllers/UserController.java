@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -61,13 +59,19 @@ public class UserController {
     }
 
     @PostMapping("/add-contact")
-    public String insertContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result, Model model, HttpSession session) {
+    public String insertContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result,
+                                @RequestParam("profileImage") MultipartFile file, Model model, HttpSession session) {
         model.addAttribute("title", "Add Contact");
         if (result.hasErrors()) {
             log.error(result.toString());
             return "normal/add_contact_form";
         }
         try {
+            if (!file.isEmpty()) {
+                log.debug("file name: {}", file.getName());
+                log.debug("file size: {}", file.getSize());
+                log.debug("file content: {}", file.getContentType());
+            }
             contactService.addContact(contact, (User) model.getAttribute("user"));
             session.setAttribute("message", new Message("Contact details saved successfully", "success"));
         } catch (Exception e) {
