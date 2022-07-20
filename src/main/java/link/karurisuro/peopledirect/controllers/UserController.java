@@ -62,6 +62,7 @@ public class UserController {
     @GetMapping("/add-contact")
     public String addContact(Model model, @ModelAttribute("contact") Contact contact) {
         model.addAttribute("title", "Add Contact");
+        model.addAttribute("action", "/user/add-contact");
         return "normal/add_contact_form";
     }
 
@@ -69,6 +70,7 @@ public class UserController {
     public String insertContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result,
                                 @RequestParam("profileImage") MultipartFile file, Model model, HttpSession session) {
         model.addAttribute("title", "Add Contact");
+        model.addAttribute("action", "/user/add-contact");
         if (result.hasErrors()) {
             log.error(result.toString());
             return "normal/add_contact_form";
@@ -125,5 +127,74 @@ public class UserController {
             return "normal/user_dashboard";
         }
         return "normal/view_contacts";
+    }
+
+
+    @GetMapping("/update-contact")
+    public String showUpdateContact(Model model, @ModelAttribute("contact") Contact contact,
+                                @RequestParam(name = "id") Long id,
+                                HttpSession session) {
+        model.addAttribute("title", "Add Contact");
+        model.addAttribute("action", "/user/update-contact?id="+id);
+        try {
+            Contact contactDetails = contactService.getSingleContact(id);
+            model.addAttribute("contact", contactDetails);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            session.setAttribute("message", new Message(e.getMessage(), "warning"));
+            return "normal/view-contacts";
+        }
+
+        return "normal/add_contact_form";
+    }
+
+
+    @PostMapping("/update-contact")
+    public String updateContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result,
+                                @RequestParam("profileImage") MultipartFile file, Model model, HttpSession session,
+                                @RequestParam(name = "id")Long id) {
+        model.addAttribute("title", "Add Contact");
+        model.addAttribute("action", "/user/update-contact?id="+id);
+        if (result.hasErrors()) {
+            log.error(result.toString());
+            return "normal/add_contact_form";
+        }
+
+        try {
+            if(file.isEmpty()){
+                contact.setImgUrl("default_profile.png");
+            }
+            else if(!(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg"))){
+                session.setAttribute("message", new Message("Only jpeg. png file will be accepted", "danger"));
+                return "normal/add_contact_form";
+            }
+            else {
+                log.debug("file input name: {}", file.getName());
+                log.debug("file name: {}", file.getOriginalFilename());
+                log.debug("file size: {}", file.getSize());
+                log.debug("file content type: {}", file.getContentType());
+
+                String ext = file.getContentType().split("/")[1];
+                // uuid generation
+                String fileName = UUID.randomUUID().toString() + "." + ext;
+
+                // implementation returns a File reference for the given URI-identified resource,
+                // provided that it refers to a file in the file system.
+                File fileToBeSaved = new ClassPathResource("static/uploads").getFile();
+                Path uploadPath = Paths.get(fileToBeSaved.getAbsolutePath(), File.separator, fileName);
+                Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
+                log.debug("Image uploaded at : {}", uploadPath.toString());
+
+                contact.setImgUrl(fileName);
+            }
+            contactService.updateContact(contact, (User) model.getAttribute("user"), id);
+            session.setAttribute("message", new Message("Contact details saved successfully", "success"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            String messageString = e.getMessage().isBlank() ? "Something went wrong :(" : e.getMessage();
+            session.setAttribute("message", new Message(messageString, "danger"));
+            return "normal/add_contact_form";
+        }
+        return "redirect:/user/view-contacts";
     }
 }
