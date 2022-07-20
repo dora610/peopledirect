@@ -10,16 +10,16 @@
 <div class="container">
   <div class="row">
       <h2 class="col-lg-6">Contact details saved by <span th:text="${userName}"></span></h2>
-      <h5 class="text-end text-secondary col-lg-4"><span th:text="${#lists.size(contacts)}">0</span> contacts found </h5>
+      <h5 class="text-end text-secondary col-lg-4"><span th:text="${totalEle}">0</span> contacts found </h5>
       <span class="text-end text-secondary col-lg-2">
-        <a href="/user/add-contact" class="btn btn-success">Add Contact</a>
+        <a href="/user/add-contact?page=0" class="btn btn-success">Add Contact</a>
       </span>
   </div>
   <hr/>
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col" th:each="contact : ${contacts}" th:unless="${#lists.isEmpty(contacts)}">
       <div class="card h-100">
-        <div class="d-flex justify-center col-lg-6">
+        <div class="d-flex justify-content-center">
           <img th:src="'/uploads/' + ${contact.imgUrl}" class="card-img-top" alt="profile image" width="50px" height="200px">
         </div>
         <div class="card-body">
@@ -43,6 +43,9 @@
       </div>
     </div>
   </div>
+
+  <div th:unless="${#lists.isEmpty(pages)}" th:insert="~{mixins/pagination :: page-nav}" class="my-4 row"></div>
+
 </div>
 </body>
 </html>

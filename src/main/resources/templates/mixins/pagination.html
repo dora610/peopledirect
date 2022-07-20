@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagination</title>
+</head>
+<body>
+<nav th:fragment="page-nav" aria-label="Page navigation">
+  <ul class="pagination d-flex justify-content-center">
+    <li th:class="${currPage &gt; 0} ? 'page-item' : 'page-item disabled'">
+      <a th:if="${currPage &gt; 0}" class="page-link" th:href="'/user/view-contacts?page=' + ${currPage - 1}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+      <span th:if="${currPage == 0}" class="page-link">&laquo;</span>
+    </li>
+
+    <li th:each="page: ${pages}" class="page-item" th:classappend="${page-1 == currPage}? 'active':'' ">
+      <a class="page-link" th:href="'/user/view-contacts?page=' + ${page-1}" th:text="${page}">0</a>
+    </li>
+<!--    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+    <li th:class="${currPage &lt; totalPages-1} ? 'page-item' : 'page-item disabled'">
+      <a th:if="${currPage &lt; totalPages-1}" class="page-link" th:href="'/user/view-contacts?page=' + ${currPage + 1}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+      <span th:if="${currPage == totalPages-1}" class="page-link">&raquo;</span>
+    </li>
+  </ul>
+</nav>
+</body>
+</html>

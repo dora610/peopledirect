@@ -9,6 +9,7 @@ import link.karurisuro.peopledirect.utils.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -77,33 +79,7 @@ public class UserController {
         }
 
         try {
-            if(file.isEmpty()){
-                contact.setImgUrl("default_profile.png");
-            }
-            else if(!(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg"))){
-                session.setAttribute("message", new Message("Only jpeg. png file will be accepted", "danger"));
-                return "normal/add_contact_form";
-            }
-            else {
-                log.debug("file input name: {}", file.getName());
-                log.debug("file name: {}", file.getOriginalFilename());
-                log.debug("file size: {}", file.getSize());
-                log.debug("file content type: {}", file.getContentType());
-
-                String ext = file.getContentType().split("/")[1];
-                // uuid generation
-                String fileName = UUID.randomUUID().toString() + "." + ext;
-
-                // implementation returns a File reference for the given URI-identified resource,
-                // provided that it refers to a file in the file system.
-                File fileToBeSaved = new ClassPathResource("static/uploads").getFile();
-                Path uploadPath = Paths.get(fileToBeSaved.getAbsolutePath(), File.separator, fileName);
-                Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
-                log.debug("Image uploaded at : {}", uploadPath.toString());
-
-                contact.setImgUrl(fileName);
-            }
-            contactService.addContact(contact, (User) model.getAttribute("user"));
+            contactService.addContact(contact, (User) model.getAttribute("user"), file);
             session.setAttribute("message", new Message("Contact details saved successfully", "success"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,11 +91,29 @@ public class UserController {
     }
 
     @GetMapping("/view-contacts")
-    public String viewContacts(Model model, HttpSession session, @ModelAttribute("user") User user) {
+    public String viewContacts(Model model, HttpSession session, @ModelAttribute("user") User user,
+                               @RequestParam(name = "page", defaultValue = "0")int page,
+                               @RequestParam(name = "limit", defaultValue = "6")int limit) {
         model.addAttribute("title", "View Contacts");
         try {
-            List<Contact> contacts = contactService.getAllContacts(user);
-            model.addAttribute("contacts", contacts);
+            Page<Contact> pageableContacts = contactService.getAllContacts(user, page, limit);
+
+            log.debug("total no. of elements: {}", pageableContacts.getTotalElements());
+            log.debug("total no. of pages: {}", pageableContacts.getTotalPages());
+            log.debug("current page: {}", pageableContacts.getNumber());
+
+            List<Contact> contactList = pageableContacts.toList();
+
+            List<Integer> pageList = new ArrayList<>();
+            for (int i = 0; i < pageableContacts.getTotalPages(); i++) {
+                pageList.add(i+1);
+            }
+
+            model.addAttribute("contacts", contactList);
+            model.addAttribute("totalEle", pageableContacts.getTotalElements());
+            model.addAttribute("totalPages", pageableContacts.getTotalPages());
+            model.addAttribute("pages", pageList);
+            model.addAttribute("currPage", pageableContacts.getNumber());
         } catch (Exception e) {
             e.printStackTrace();
             String messageString = e.getMessage().isBlank() ? "Something went wrong :(" : e.getMessage();
@@ -144,7 +138,6 @@ public class UserController {
             session.setAttribute("message", new Message(e.getMessage(), "warning"));
             return "normal/view-contacts";
         }
-
         return "normal/add_contact_form";
     }
 
@@ -161,33 +154,7 @@ public class UserController {
         }
 
         try {
-            if(file.isEmpty()){
-                contact.setImgUrl("default_profile.png");
-            }
-            else if(!(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg"))){
-                session.setAttribute("message", new Message("Only jpeg. png file will be accepted", "danger"));
-                return "normal/add_contact_form";
-            }
-            else {
-                log.debug("file input name: {}", file.getName());
-                log.debug("file name: {}", file.getOriginalFilename());
-                log.debug("file size: {}", file.getSize());
-                log.debug("file content type: {}", file.getContentType());
-
-                String ext = file.getContentType().split("/")[1];
-                // uuid generation
-                String fileName = UUID.randomUUID().toString() + "." + ext;
-
-                // implementation returns a File reference for the given URI-identified resource,
-                // provided that it refers to a file in the file system.
-                File fileToBeSaved = new ClassPathResource("static/uploads").getFile();
-                Path uploadPath = Paths.get(fileToBeSaved.getAbsolutePath(), File.separator, fileName);
-                Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
-                log.debug("Image uploaded at : {}", uploadPath.toString());
-
-                contact.setImgUrl(fileName);
-            }
-            contactService.updateContact(contact, (User) model.getAttribute("user"), id);
+            contactService.updateContact(contact, (User) model.getAttribute("user"), id, file);
             session.setAttribute("message", new Message("Contact details saved successfully", "success"));
         } catch (Exception e) {
             e.printStackTrace();
