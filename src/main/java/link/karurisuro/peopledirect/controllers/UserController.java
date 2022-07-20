@@ -8,6 +8,7 @@ import link.karurisuro.peopledirect.service.UserService;
 import link.karurisuro.peopledirect.utils.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,9 +17,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -66,11 +73,33 @@ public class UserController {
             log.error(result.toString());
             return "normal/add_contact_form";
         }
+
         try {
-            if (!file.isEmpty()) {
-                log.debug("file name: {}", file.getName());
+            if(file.isEmpty()){
+                contact.setImgUrl("default_profile.png");
+            }
+            else if(!(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg"))){
+                session.setAttribute("message", new Message("Only jpeg. png file will be accepted", "danger"));
+                return "normal/add_contact_form";
+            }
+            else {
+                log.debug("file input name: {}", file.getName());
+                log.debug("file name: {}", file.getOriginalFilename());
                 log.debug("file size: {}", file.getSize());
-                log.debug("file content: {}", file.getContentType());
+                log.debug("file content type: {}", file.getContentType());
+
+                String ext = file.getContentType().split("/")[1];
+                // uuid generation
+                String fileName = UUID.randomUUID().toString() + "." + ext;
+
+                // implementation returns a File reference for the given URI-identified resource,
+                // provided that it refers to a file in the file system.
+                File fileToBeSaved = new ClassPathResource("static/uploads").getFile();
+                Path uploadPath = Paths.get(fileToBeSaved.getAbsolutePath(), File.separator, fileName);
+                Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
+                log.debug("Image uploaded at : {}", uploadPath.toString());
+
+                contact.setImgUrl(fileName);
             }
             contactService.addContact(contact, (User) model.getAttribute("user"));
             session.setAttribute("message", new Message("Contact details saved successfully", "success"));
@@ -85,7 +114,6 @@ public class UserController {
 
     @GetMapping("/view-contacts")
     public String viewContacts(Model model, HttpSession session, @ModelAttribute("user") User user) {
-//        User user = includeUserDetails(model, principal);
         model.addAttribute("title", "View Contacts");
         try {
             List<Contact> contacts = contactService.getAllContacts(user);

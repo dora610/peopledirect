@@ -16,7 +16,7 @@
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col" th:each="contact : ${contacts}" th:unless="${#lists.isEmpty(contacts)}">
       <div class="card h-100">
-<!--        <img src="..." class="card-img-top" alt="...">-->
+        <img th:src="'/uploads/' + ${contact.imgUrl}" class="card-img-top" alt="profile image" width="50px" height="200px">
         <div class="card-body">
           <div class="row">
             <div class="col-md-6">

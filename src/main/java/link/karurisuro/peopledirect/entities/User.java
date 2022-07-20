@@ -32,7 +32,7 @@ public class User {
     private String bio;
     private String role;
     private boolean isEnabled;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Contact> contacts = new ArrayList<>();
 
     @Transient

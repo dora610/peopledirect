@@ -15,7 +15,7 @@
               enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" aria-describedby="name" th:field="*{name}" required>
+                <input type="text" class="form-control" id="name" aria-describedby="name" th:field="*{name}" required autofocus>
             </div>
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
@@ -39,12 +39,12 @@
             </div>
             <div class="mb-3">
                 <label for="description">Description</label>
-                <textarea class="form-control" placeholder="Add bio" id="description"
+                <textarea class="form-control" placeholder="Add bio" id="tiny"
                           th:field="*{description}"></textarea>
             </div>
             <div class="input-group mb-3">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile02" th:name="${profileImage}">
+                    <input type="file" class="custom-file-input" id="inputGroupFile02" name="profileImage">
                     <label class="custom-file-label" for="inputGroupFile02">Upload profile image</label>
                 </div>
             </div>
@@ -54,6 +54,13 @@
             </div>
         </form>
     </div>
+
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+      tinymce.init({
+        selector: 'textarea#tiny'
+      });
+    </script>
 </div>
 </body>
 </html>

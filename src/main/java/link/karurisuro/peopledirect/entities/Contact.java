@@ -36,5 +36,5 @@ public class Contact {
     @NotEmpty(message = "Please enter valid phone number")
     private String phone;
     @ManyToOne(cascade = CascadeType.ALL)
-    private User user_id;
+    private User user;
 }
