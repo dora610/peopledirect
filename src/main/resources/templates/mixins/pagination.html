@@ -14,11 +14,10 @@
       <span th:if="${currPage == 0}" class="page-link">&laquo;</span>
     </li>
 
-    <li th:each="page: ${pages}" class="page-item" th:classappend="${page-1 == currPage}? 'active':'' ">
-      <a class="page-link" th:href="'/user/view-contacts?page=' + ${page-1}" th:text="${page}">0</a>
+    <li th:each="pageNum: ${#numbers.sequence(1,totalPages)}" class="page-item" th:classappend="${pageNum-1 == currPage}? 'active':'' ">
+      <a class="page-link" th:href="'/user/view-contacts?page=' + ${pageNum-1}" th:text="${pageNum}">0</a>
     </li>
-<!--    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+
     <li th:class="${currPage &lt; totalPages-1} ? 'page-item' : 'page-item disabled'">
       <a th:if="${currPage &lt; totalPages-1}" class="page-link" th:href="'/user/view-contacts?page=' + ${currPage + 1}" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>

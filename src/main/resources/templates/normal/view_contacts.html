@@ -16,7 +16,7 @@
       </span>
   </div>
   <hr/>
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="row row-cols-1 row-cols-md-3 g-4 card-row">
     <div class="col" th:each="contact : ${contacts}" th:unless="${#lists.isEmpty(contacts)}">
       <div class="card h-100">
         <div class="d-flex justify-content-center">
@@ -37,7 +37,7 @@
 
           <hr/>
           <p class="card-text" th:utext="${contact.description}">Description:</p>
-          <a href="#" class="btn btn-primary">View details</a>
+          <button class="btn btn-primary view-details" th:data-index="${contact.id}" data-bs-toggle="modal" data-bs-target="#exampleModal">View details</button>
           <a th:href="'/user/update-contact?id=' + ${contact.id}" class="btn btn-warning">Update details</a>
         </div>
       </div>
@@ -45,6 +45,24 @@
   </div>
 
   <div th:unless="${#lists.isEmpty(pages)}" th:insert="~{mixins/pagination :: page-nav}" class="my-4 row"></div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </div>
 </body>

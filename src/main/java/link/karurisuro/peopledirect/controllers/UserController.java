@@ -8,8 +8,8 @@ import link.karurisuro.peopledirect.service.UserService;
 import link.karurisuro.peopledirect.utils.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,16 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -164,4 +157,17 @@ public class UserController {
         }
         return "redirect:/user/view-contacts";
     }
+
+    @ResponseBody
+    @GetMapping("/view-contact/{id}")
+    public ResponseEntity<Contact> viewSingleContact(@PathVariable(name = "id")Long id, Principal principal) {
+        try {
+            Contact contact = contactService.getSingleContact(id, principal.getName());
+            return ResponseEntity.ok().body(contact);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

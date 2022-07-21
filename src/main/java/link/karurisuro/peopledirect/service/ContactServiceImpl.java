@@ -1,6 +1,7 @@
 package link.karurisuro.peopledirect.service;
 
 import link.karurisuro.peopledirect.dao.ContactRepository;
+import link.karurisuro.peopledirect.dao.UserRepository;
 import link.karurisuro.peopledirect.entities.Contact;
 import link.karurisuro.peopledirect.entities.User;
 import link.karurisuro.peopledirect.utils.NotFoundException;
@@ -26,6 +27,9 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private ContactRepository contactRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public void addContact(Contact contact, User user, MultipartFile file) throws Exception {
         uploadImage(file, contact);
@@ -43,6 +47,16 @@ public class ContactServiceImpl implements ContactService {
     public Contact getSingleContact(Long id) throws NotFoundException {
         return contactRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("No such contact exists :("));
+    }
+
+
+    public Contact getSingleContact(Long id, String userName) throws NotFoundException {
+        User user = userRepository.findByEmail(userName).orElseThrow(() -> new NotFoundException("You are not allowed to view that!!"));
+
+        Contact contact = contactRepository.findByIdAndUser(id, user.getId())
+                .orElseThrow(() -> new NotFoundException("No such contact exists :("));
+        contact.setUser(null);
+        return contact;
     }
 
     @Override
