@@ -31,7 +31,7 @@ public class Contact {
     @Column(unique = true, nullable = false)
     private String email;
     private String imgUrl;
-    @Column(length = 1000)
+    @Column(length = 5000)
     private String description;
     @NotEmpty(message = "Please enter valid phone number")
     private String phone;
