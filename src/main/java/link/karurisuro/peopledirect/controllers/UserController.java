@@ -58,12 +58,13 @@ public class UserController {
     public String addContact(Model model, @ModelAttribute("contact") Contact contact) {
         model.addAttribute("title", "Add Contact");
         model.addAttribute("action", "/user/add-contact");
+        model.addAttribute("btn_label", "Add Contact");
         return "normal/add_contact_form";
     }
 
     @PostMapping("/add-contact")
     public String insertContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result,
-                                @RequestParam("profileImage") MultipartFile file, Model model, HttpSession session) {
+            @RequestParam("profileImage") MultipartFile file, Model model, HttpSession session) {
         model.addAttribute("title", "Add Contact");
         model.addAttribute("action", "/user/add-contact");
         if (result.hasErrors()) {
@@ -85,8 +86,8 @@ public class UserController {
 
     @GetMapping("/view-contacts")
     public String viewContacts(Model model, HttpSession session, @ModelAttribute("user") User user,
-                               @RequestParam(name = "page", defaultValue = "0")int page,
-                               @RequestParam(name = "limit", defaultValue = "6")int limit) {
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "limit", defaultValue = "6") int limit) {
         model.addAttribute("title", "View Contacts");
         try {
             Page<Contact> pageableContacts = contactService.getAllContacts(user, page, limit);
@@ -99,7 +100,7 @@ public class UserController {
 
             List<Integer> pageList = new ArrayList<>();
             for (int i = 0; i < pageableContacts.getTotalPages(); i++) {
-                pageList.add(i+1);
+                pageList.add(i + 1);
             }
 
             model.addAttribute("contacts", contactList);
@@ -116,13 +117,13 @@ public class UserController {
         return "normal/view_contacts";
     }
 
-
     @GetMapping("/update-contact")
     public String showUpdateContact(Model model, @ModelAttribute("contact") Contact contact,
-                                @RequestParam(name = "id") Long id,
-                                HttpSession session) {
-        model.addAttribute("title", "Add Contact");
-        model.addAttribute("action", "/user/update-contact?id="+id);
+            @RequestParam(name = "id") Long id,
+            HttpSession session) {
+        model.addAttribute("title", "Update Contact");
+        model.addAttribute("action", "/user/update-contact?id=" + id);
+        model.addAttribute("btn_label", "Update Contact");
         try {
             Contact contactDetails = contactService.getSingleContact(id);
             model.addAttribute("contact", contactDetails);
@@ -134,13 +135,12 @@ public class UserController {
         return "normal/add_contact_form";
     }
 
-
     @PostMapping("/update-contact")
     public String updateContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result,
-                                @RequestParam("profileImage") MultipartFile file, Model model, HttpSession session,
-                                @RequestParam(name = "id")Long id) {
-        model.addAttribute("title", "Add Contact");
-        model.addAttribute("action", "/user/update-contact?id="+id);
+            @RequestParam("profileImage") MultipartFile file, Model model, HttpSession session,
+            @RequestParam(name = "id") Long id) {
+        model.addAttribute("title", "Update Contact");
+        model.addAttribute("action", "/user/update-contact?id=" + id);
         if (result.hasErrors()) {
             log.error(result.toString());
             return "normal/add_contact_form";
@@ -160,13 +160,31 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/view-contact/{id}")
-    public ResponseEntity<Contact> viewSingleContact(@PathVariable(name = "id")Long id, Principal principal) {
+    public ResponseEntity<Contact> viewSingleContact(@PathVariable(name = "id") Long id, Principal principal) {
         try {
             Contact contact = contactService.getSingleContact(id, principal.getName());
             return ResponseEntity.ok().body(contact);
         } catch (NotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @ResponseBody
+    @DeleteMapping("/delete-contact/{id}")
+    public ResponseEntity<Message> deleteContact(@PathVariable(name = "id") Long id, Principal principal,
+            HttpSession session) {
+        try {
+            session.setAttribute("message", new Message("Contact details deleted successfully", "success"));
+            contactService.deleteContact(id, principal.getName());
+            log.debug("contact deleted - {}", id);
+            return ResponseEntity.ok().body(new Message("Contact details deleted successfully", "success"));
+        } catch (NotFoundException ne) {
+            ne.printStackTrace();
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new Message(e.getMessage(), "danger"));
         }
     }
 

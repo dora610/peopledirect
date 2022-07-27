@@ -13,4 +13,5 @@ public interface ContactService {
     public Contact getSingleContact(Long id) throws NotFoundException;
     public Contact getSingleContact(Long id, String name) throws NotFoundException;
     public void updateContact(Contact contact, User user, Long contactId, MultipartFile file) throws Exception;
+    public void deleteContact(Long contactId, String userName) throws NotFoundException;
 }

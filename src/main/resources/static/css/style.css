@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: "Roboto", "Times New Roman", Times, serif;
 }
 
 .navbar {
@@ -112,4 +113,21 @@ input.custom-file-input:focus + label {
 }
 input.custom-file-input:focus-within + label {
   outline: thin dotted;
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: repeat(2, minnax(100px, 1fr));
+  gap: 5px;
+  font-size: medium;
+  font-weight: 500;
+  padding: 1rem 2rem;
+}
+.modal-body h5 {
+  font-size: small;
+}
+.modal-details {
+  grid-column: span 2;
+  grid-row: span 1;
+  font-weight: 400;
 }
