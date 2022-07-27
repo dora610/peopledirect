@@ -43,7 +43,7 @@
               />
             </div>
             <div class="card-body">
-              <div class="d-flex justify-content-between">
+              <div class="d-flex justify-content-around">
                 <div class="left-details">
                   <h5 class="card-title" th:text="${contact.name}">
                     Card title
@@ -58,34 +58,28 @@
                     class="card-subtitle mb-2 text-muted"
                     th:text="${contact.userName}"
                   ></h6>
-                  <h6
-                    class="card-subtitle mb-2 text-muted"
-                    th:text="${contact.phone}"
-                  ></h6>
-                  <h6
-                    class="card-subtitle mb-2 text-muted"
-                    th:text="${contact.email}"
-                  ></h6>
                 </div>
               </div>
 
               <hr />
-              <p class="card-text" th:utext="${contact.description}">
+              <!-- <p class="card-text" th:utext="${contact.description}">
                 Description:
-              </p>
-              <button
-                class="btn btn-primary view-details"
-                th:data-index="${contact.id}"
-                data-bs-toggle="modal"
-                data-bs-target="#contactDetailsModal"
-              >
-                View details
-              </button>
-              <a
-                th:href="'/user/update-contact?id=' + ${contact.id}"
-                class="btn btn-warning"
-                >Update details</a
-              >
+              </p> -->
+              <div class="d-flex justify-content-center gap-2">
+                <button
+                  class="btn btn-primary view-details"
+                  th:data-index="${contact.id}"
+                  data-bs-toggle="modal"
+                  data-bs-target="#contactDetailsModal"
+                >
+                  View details
+                </button>
+                <a
+                  th:href="'/user/update-contact?id=' + ${contact.id}"
+                  class="btn btn-warning"
+                  >Update details</a
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -117,8 +111,7 @@
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
-            </div>
+            <div class="modal-body"></div>
             <div class="modal-footer">
               <button
                 type="button"

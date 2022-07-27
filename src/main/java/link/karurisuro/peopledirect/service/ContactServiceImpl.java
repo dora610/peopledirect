@@ -98,8 +98,10 @@ public class ContactServiceImpl implements ContactService {
     }
 
     public void deleteContact(Long contactId, String userName) throws NotFoundException{
-        User user = userRepository.findByEmail(userName).orElseThrow(() -> new NotFoundException("You are not allowed to view that!!"));
-        contactRepository.deleteByIdAndUser(contactId, user.getId());
+        Contact contact = getSingleContact(contactId, userName);
+        contactRepository.deleteById(contact.getId());
+        /* User user = userRepository.findByEmail(userName).orElseThrow(() -> new NotFoundException("You are not allowed to view that!!"));
+        contactRepository.deleteByIdAndUser(contactId, user.getId()); */
     }
 
     private void contactMapper(Contact savedContact, Contact contact) {
