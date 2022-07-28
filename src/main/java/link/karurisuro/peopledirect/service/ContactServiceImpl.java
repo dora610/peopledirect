@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,17 +65,17 @@ public class ContactServiceImpl implements ContactService {
         Contact savedContact = contactRepository.findById(contactId).orElseThrow(() -> new NotFoundException("No such contact found :("));
         contactMapper(savedContact, contact);
         savedContact.setUser(user);
-        uploadImage(file, savedContact);
+        if(!file.isEmpty()){
+            uploadImage(file, savedContact);
+        }
         contactRepository.saveAndFlush(savedContact);
         log.debug("contact updated");
     }
 
-    private void uploadImage(MultipartFile file, Contact contact) throws Exception {
+    private void uploadImage(MultipartFile file, Contact contact) throws Exception  {
         if (file.isEmpty()) {
             contact.setImgUrl("default_profile.png");
         } else if (!(file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg"))) {
-//            session.setAttribute("message", new Message("Only jpeg. png file will be accepted", "danger"));
-//            return "normal/add_contact_form";
             throw new Exception("Only jpeg. png file will be accepted");
         } else {
             log.debug("file input name: {}", file.getName());
@@ -97,8 +98,9 @@ public class ContactServiceImpl implements ContactService {
         }
     }
 
-    public void deleteContact(Long contactId, String userName) throws NotFoundException{
+    public void deleteContact(Long contactId, String userName) throws NotFoundException, IOException{
         Contact contact = getSingleContact(contactId, userName);
+        deleteImage(contact.getImgUrl());
         contactRepository.deleteById(contact.getId());
         /* User user = userRepository.findByEmail(userName).orElseThrow(() -> new NotFoundException("You are not allowed to view that!!"));
         contactRepository.deleteByIdAndUser(contactId, user.getId()); */
@@ -109,10 +111,17 @@ public class ContactServiceImpl implements ContactService {
         savedContact.setUser(contact.getUser());
         savedContact.setDesignation(contact.getDesignation());
         savedContact.setEmail(contact.getEmail());
-        savedContact.setImgUrl(contact.getImgUrl());
         savedContact.setDescription(contact.getDescription());
         savedContact.setPhone(contact.getPhone());
     }
 
-
+    private void deleteImage(String imgUrl) throws IOException {
+        if(imgUrl==null || imgUrl.isBlank()){
+            return;
+        }
+        File savedImgFile = new ClassPathResource("static/uploads").getFile();
+        Path imgPath = Paths.get(savedImgFile.getAbsolutePath(), File.separator, imgUrl);
+        Files.deleteIfExists(imgPath);
+        log.debug("file deleted: {}", imgPath.toString());
+    }
 }

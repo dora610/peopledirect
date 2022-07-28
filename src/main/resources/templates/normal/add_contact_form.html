@@ -1,68 +1,139 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/user_layout::normal_layout(~{::div})">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="normal/user_layout::normal_layout(~{::div})"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User dashboard</title>
-</head>
-<body>
-<div class="d-flex flex-column justify-content-center align-items-center p-4 container">
-    <div class="col-lg-7 col-md-9">
-        <h2>Add Contact </h2>
-        <hr/>
-        <form th:action="@{${action}}" method="post" class="needs-validation" th:object="${contact}"
-              enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" aria-describedby="name" th:field="*{name}" required autofocus>
+  </head>
+  <body>
+    <div
+      class="d-flex flex-column justify-content-center align-items-center p-4 container"
+    >
+      <div class="col-lg-7 col-md-9">
+        <h2 th:text="${title}">Add Contact</h2>
+        <hr />
+        <form
+          th:action="@{${action}}"
+          method="post"
+          class="needs-validation"
+          th:object="${contact}"
+          enctype="multipart/form-data"
+        >
+          <div class="input-group mb-3">
+            <div class="custom-file">
+              <div class="thumbnail my-4">
+                <img
+                  th:if="${title == 'Update Contact'}"
+                  th:src="'/uploads/' + ${contact.imgUrl}"
+                  class="thumb-img"
+                  alt="profile image"
+                  height="100"
+                />
+              </div>
+              <input
+                type="file"
+                class="custom-file-input"
+                id="inputGroupFile02"
+                name="profileImage"
+                accept="image/*"
+              />
+              <label
+                class="custom-file-label btn btn-success"
+                for="inputGroupFile02"
+                >Upload profile image</label
+              >
             </div>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" aria-describedby="username" th:field="*{userName}"
-                       required>
-            </div>
-            <div class="mb-3">
-                <label for="desig" class="form-label">Designation</label>
-                <input type="text" class="form-control" id="desig" aria-describedby="desig" th:field="*{designation}"
-                       required>
-            </div>
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="number" class="form-control" id="phone" aria-describedby="phone" th:field="*{phone}"
-                       required>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                       th:field="*{email}" required>
-            </div>
-            <div class="mb-3">
-                <label for="description">Description</label>
-                <textarea class="form-control" placeholder="Add bio" id="tiny"
-                          th:field="*{description}"></textarea>
-            </div>
-            <div class="input-group mb-3">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile02" name="profileImage" accept="image/*">
-                    <label class="custom-file-label" for="inputGroupFile02">Upload profile image</label>
-
-                    <div class="thumbnail"></div>
-                </div>
-            </div>
-            <div class="d-flex justify-content-center gap-2">
-                <button type="reset" class="btn btn-danger">Reset</button>
-                <button type="submit" class="btn btn-primary" th:text="${btn_label}"></button>
-            </div>
+          </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              aria-describedby="name"
+              th:field="*{name}"
+              required
+              autofocus
+            />
+          </div>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              aria-describedby="username"
+              th:field="*{userName}"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="desig" class="form-label">Designation</label>
+            <input
+              type="text"
+              class="form-control"
+              id="desig"
+              aria-describedby="desig"
+              th:field="*{designation}"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input
+              type="number"
+              class="form-control"
+              id="phone"
+              aria-describedby="phone"
+              th:field="*{phone}"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              th:field="*{email}"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description">Description</label>
+            <textarea
+              class="form-control"
+              placeholder="Add bio"
+              id="tiny"
+              th:field="*{description}"
+            ></textarea>
+          </div>
+          <div class="d-flex justify-content-center gap-2">
+            <button type="reset" class="btn btn-danger">Reset</button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              th:text="${btn_label}"
+            ></button>
+          </div>
         </form>
-    </div>
+      </div>
 
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-      tinymce.init({
-        selector: 'textarea#tiny'
-      });
-    </script>
-</div>
-</body>
+      <script
+        src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"
+      ></script>
+      <script>
+        tinymce.init({
+          selector: "textarea#tiny",
+        });
+      </script>
+    </div>
+  </body>
 </html>

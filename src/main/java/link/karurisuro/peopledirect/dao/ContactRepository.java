@@ -16,6 +16,6 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
     @Query("select c from Contact c where c.id=:id and c.user.id=:userId")
     public Optional<Contact> findByIdAndUser(@Param("id")Long id, @Param("userId")Long userId);
 
-    @Query("delete from Contact c where c.id=:id and c.user.id=:userId")
-    public void deleteByIdAndUser(@Param("id")Long id, @Param("userId")Long userId);
+    /* @Query("delete from Contact c where c.id=:id and c.user.id=:userId")
+    public void deleteByIdAndUser(@Param("id")Long id, @Param("userId")Long userId); */
 }

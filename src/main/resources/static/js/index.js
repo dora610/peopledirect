@@ -1,4 +1,5 @@
 import BACKEND_API from "./backend.js";
+import fileUploadHandler from "./fileUpload.js";
 
 const closeBtn = document.querySelector(".close-btn");
 const openBtn = document.querySelector(".sidebar-open");
@@ -16,7 +17,6 @@ openBtn &&
     sidebar.classList.remove("sidebar-close");
   });
 
-const viewDetailsBtn = document.querySelector(".view-details");
 const contactsRow = document.querySelector(".card-row");
 
 contactsRow &&
@@ -70,15 +70,20 @@ deleteBtn &&
         },
       })
         .then((resp) => {
-          if(!resp.ok){
+          if (!resp.ok) {
             console.error(resp);
           }
-          resp.json()
+          resp.json();
         })
         .then((data) => {
           console.log(data);
           location.reload();
-        }).catch(e => console.error(e.message));
+        })
+        .catch((e) => console.error(e.message));
     },
     false
   );
+
+const fileInput = document.querySelector(".custom-file-input");
+
+fileInput && fileInput.addEventListener("change", fileUploadHandler, false);
