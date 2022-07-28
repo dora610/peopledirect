@@ -58,6 +58,7 @@ public class UserController {
     public String addContact(Model model, @ModelAttribute("contact") Contact contact) {
         model.addAttribute("title", "Add Contact");
         model.addAttribute("action", "/user/add-contact");
+        model.addAttribute("method", "POST");
         model.addAttribute("btn_label", "Add Contact");
         return "normal/add_contact_form";
     }
@@ -67,6 +68,8 @@ public class UserController {
             @RequestParam("profileImage") MultipartFile file, Model model, HttpSession session) {
         model.addAttribute("title", "Add Contact");
         model.addAttribute("action", "/user/add-contact");
+        model.addAttribute("method", "POST");
+        model.addAttribute("btn_label", "Add Contact");
         if (result.hasErrors()) {
             log.error(result.toString());
             return "normal/add_contact_form";
@@ -123,6 +126,7 @@ public class UserController {
             HttpSession session) {
         model.addAttribute("title", "Update Contact");
         model.addAttribute("action", "/user/update-contact?id=" + id);
+        model.addAttribute("method", "PUT");
         model.addAttribute("btn_label", "Update Contact");
         try {
             Contact contactDetails = contactService.getSingleContact(id);
@@ -135,12 +139,14 @@ public class UserController {
         return "normal/add_contact_form";
     }
 
-    @PostMapping("/update-contact")
+    @PutMapping("/update-contact")
     public String updateContact(@Valid @ModelAttribute("contact") Contact contact, BindingResult result,
             @RequestParam("profileImage") MultipartFile file, Model model, HttpSession session,
             @RequestParam(name = "id") Long id) {
         model.addAttribute("title", "Update Contact");
         model.addAttribute("action", "/user/update-contact?id=" + id);
+        model.addAttribute("method", "PUT");
+        model.addAttribute("btn_label", "Update Contact");
         if (result.hasErrors()) {
             log.error(result.toString());
             return "normal/add_contact_form";

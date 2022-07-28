@@ -19,7 +19,7 @@
         <hr />
         <form
           th:action="@{${action}}"
-          method="post"
+          th:attr="method=${method}"
           class="needs-validation"
           th:object="${contact}"
           enctype="multipart/form-data"
