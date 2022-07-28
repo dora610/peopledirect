@@ -66,7 +66,10 @@ public class ContactServiceImpl implements ContactService {
         contactMapper(savedContact, contact);
         savedContact.setUser(user);
         if(!file.isEmpty()){
+            String prevImg = savedContact.getImgUrl();
             uploadImage(file, savedContact);
+            // deleting previous image file once new file is associated with new contact
+            deleteImage(prevImg);
         }
         contactRepository.saveAndFlush(savedContact);
         log.debug("contact updated");
