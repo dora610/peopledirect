@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="normal/user_layout::normal_layout(~{::div})"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="profile-card">
+        <img src="/uploads/default_profile.png" alt="profile pic" />
+        <h1 th:text="${user.name}"></h1>
+        <p>Email:</p>
+        <h4 th:text="${user.email}"></h4>
+        <p>Role</p>
+        <h4 th:text="${user.role}"></h4>
+        <p>Account active:</p>
+        <h4 th:text="${user.isEnabled}"></h4>
+        <p>Bio:</p>
+        <h4 th:text="${user.bio}"></h4>
+      </div>
+    </div>
+  </body>
+</html>

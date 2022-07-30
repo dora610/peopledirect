@@ -22,13 +22,13 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/about}">About Us</a>
                 </li>
-                <li class="nav-item">
+                <li th:if="${#strings.isEmpty(userName)}" class="nav-item">
                     <a class="nav-link" th:href="@{/signin}">Sign In</a>
                 </li>
-                <li class="nav-item">
+                <li th:if="${#strings.isEmpty(userName)}" class="nav-item">
                     <a class="nav-link" th:href="@{/signup}">Sign Up</a>
                 </li>
-                <li class="nav-item">
+                <li th:unless="${#strings.isEmpty(userName)}" class="nav-item">
                     <a class="nav-link" th:href="@{/logout}">Log out</a>
                 </li>
             </ul>

@@ -1,6 +1,8 @@
 package link.karurisuro.peopledirect.service;
 
+import link.karurisuro.peopledirect.dao.ContactRepository;
 import link.karurisuro.peopledirect.dao.UserRepository;
+import link.karurisuro.peopledirect.entities.Contact;
 import link.karurisuro.peopledirect.entities.User;
 import link.karurisuro.peopledirect.utils.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -40,5 +42,4 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserName(String email) throws NotFoundException {
         return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("No such user present!"));
     }
-
 }

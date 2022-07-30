@@ -20,6 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -107,6 +109,15 @@ public class ContactServiceImpl implements ContactService {
         contactRepository.deleteById(contact.getId());
         /* User user = userRepository.findByEmail(userName).orElseThrow(() -> new NotFoundException("You are not allowed to view that!!"));
         contactRepository.deleteByIdAndUser(contactId, user.getId()); */
+    }
+
+    @Override
+    public List<Contact> searchContact(String searchStr) throws Exception{
+        log.debug(searchStr);
+        if(searchStr.isBlank()){
+            throw new Exception("Please enter valid search criteria");
+        }
+        return contactRepository.searchContact(searchStr);
     }
 
     private void contactMapper(Contact savedContact, Contact contact) {

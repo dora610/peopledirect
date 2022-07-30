@@ -131,3 +131,51 @@ input.custom-file-input:focus-within + label {
   grid-row: span 1;
   font-weight: 400;
 }
+
+.profile-card{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 10px 20px;
+}
+.profile-card img{
+  grid-column: span 2;
+  grid-row: span 1;
+  place-self: center;
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+}
+.profile-card h1{
+  grid-column: span 2;
+  grid-row: span 1;
+  place-self: center;
+  font-size: 3rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.search-result{
+  background: #F3F4F6;
+  color: #4B5563;
+  position: absolute;
+  top: 2.5rem;
+  width: 85%;
+  border-radius: 10px;
+  z-index: 30;
+  display: none;
+}
+.search-result.active{
+  display: block;
+}
+.search-result h4{
+  padding: 5px 5px;
+}
+
+.search-result h4.selected{
+  background: #D1D5DB;
+}

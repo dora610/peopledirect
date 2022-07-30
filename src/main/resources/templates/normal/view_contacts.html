@@ -13,18 +13,36 @@
   <body>
     <div class="container">
       <div class="row">
-        <h2 class="col-lg-6">
-          Contact details saved by <span th:text="${userName}"></span>
-        </h2>
-        <h5 class="text-end text-secondary col-lg-4">
-          <span th:text="${totalEle}">0</span> contacts found
-        </h5>
-        <span class="text-end text-secondary col-lg-2">
-          <a href="/user/add-contact?page=0" class="btn btn-success"
+        <span class="text-secondary col-lg-2">
+          <a
+            href="/user/add-contact?page=0"
+            class="btn btn-success btn-sm"
             >Add Contact</a
           >
         </span>
+        <h5 class="text-secondary col-lg-4">
+          Total <span th:text="${totalEle}">0</span> contacts found
+        </h5>
+        <div class="input-group mb-3 col search-bar">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Contact name"
+            aria-label="Search box"
+            aria-describedby="button-addon2"
+            autofocus
+          />
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+            id="button-addon2"
+          >
+            Search
+          </button>
+          <div class="search-result"></div>
+        </div>
       </div>
+
       <hr />
       <div class="row row-cols-1 row-cols-md-3 g-4 card-row">
         <div
@@ -62,7 +80,7 @@
               </div>
 
               <hr />
-              
+
               <div class="d-flex justify-content-center gap-2">
                 <button
                   class="btn btn-primary view-details"

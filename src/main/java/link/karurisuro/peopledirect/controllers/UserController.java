@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -191,6 +194,35 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(new Message(e.getMessage(), "danger"));
+        }
+    }
+
+    @GetMapping("/profile")
+    public String showProfile(Principal principal, Model model, HttpSession session) {
+        try {
+            User user = userService.getUserByUserName(principal.getName());
+            model.addAttribute("user", user);
+        } catch (NotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            session.setAttribute("message", new Message("Unauthorized acceess!!", "danger"));
+            return "redirect:/user/";
+        }
+
+        return "normal/user_profile";
+    }
+
+    @ResponseBody
+    @GetMapping("/api/contact")
+    public ResponseEntity<List<Contact>> searchContact(@RequestParam(name = "q") String searchStr, Principal principal) {
+        try {
+            List<Contact> contacts = contactService.searchContact(searchStr);
+            contacts.forEach(c -> c.setUser(null));
+            log.debug("contacts {}", contacts);
+            return ResponseEntity.ok().body(contacts);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new ArrayList<>());
         }
     }
 
