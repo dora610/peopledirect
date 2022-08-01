@@ -1,4 +1,5 @@
-// import BACKEND_API from "./backend";
+import BACKEND_API from "./backend.js";
+// import { generateModelBody } from "./viewContact.js";
 const searchResultEle = document.querySelector(".search-result");
 
 let controller;
@@ -21,11 +22,16 @@ const searchHandler = (e) => {
 
   timeoutRef = setTimeout(() => {
     searchApiHandler(searchStr);
-  }, 1500);
+  }, 1000);
 };
 
-const generateSearchResult = (searchArr) => {
-  let searchContent = searchArr.map((r) => ` <h4>${r}</h4>`).join("");
+const generateSearchResult = (searchResult) => {
+  let searchContent = Object.entries(searchResult)
+    .map(
+      ([id, cName]) =>
+        `<button type="button" class="list-group-item list-group-item-action view-details" data-index=${id} data-bs-toggle="modal" data-bs-target="#contactDetailsModal">${cName}</button>`
+    )
+    .join("");
   searchResultEle.insertAdjacentHTML("beforeend", searchContent);
   searchResultEle.classList.add("active");
 };
@@ -48,13 +54,13 @@ const searchApiHandler = (searchStr) => {
     .then((data) => {
       console.log(data);
       searchResultEle.innerHTML = "";
-      generateSearchResult(data.map((r) => r.name));
+      generateSearchResult(data);
     });
 };
 
 const keyUpHandler = (e, searchInput) => {
   console.log(e.key);
-  let searchNodes = document.querySelectorAll(".search-result h4");
+  let searchNodes = document.querySelectorAll(".search-result button");
   let resultArr = [];
   if (!searchNodes) {
     return;
@@ -62,7 +68,7 @@ const keyUpHandler = (e, searchInput) => {
   resultArr = Array.from(searchNodes);
 
   resultArr[selectedResultIndex] &&
-    resultArr[selectedResultIndex].classList.remove("selected");
+    resultArr[selectedResultIndex].classList.remove("active");
 
   if (e.key === "Escape") {
     clearTimeout(timeoutRef);
@@ -86,9 +92,52 @@ const keyUpHandler = (e, searchInput) => {
     } else {
       selectedResultIndex--;
     }
+  } else if(e.key === "Enter"){
+    if(selectedResultIndex >= 0 && selectedResultIndex < resultArr.length){
+      let id = searchNodes[selectedResultIndex].dataset.index;
+      console.log(id);
+      showContactDetails(id);
+    }
   }
   resultArr[selectedResultIndex] &&
-    resultArr[selectedResultIndex].classList.add("selected");
+    resultArr[selectedResultIndex].classList.add("active");
+};
+
+
+const showContactDetails = (id) => {
+  fetch(`${BACKEND_API}/user/view-contact/${id}`,{
+    headers:{
+      "Content-Type": "application/json"
+    }
+  })
+    .then((resp) => resp.json())
+    .then((data) => {
+      document.querySelector(".modal-title").textContent = data.name;
+      console.log(document.querySelector(".modal-body"));
+      document.querySelector(".modal-body").innerHTML = generateModelBody(data);
+      document
+        .querySelector(".modal-update")
+        .setAttribute("href", `/user/update-contact?id=${data.id}`);
+    })
+    .catch((err) => console.error(err.message));
+};
+
+const generateModelBody = (contact) => {
+  let { name, userName, designation, email, phone, description } = contact;
+  let modelInnerHtml = `
+        <h5>Name :</h5>
+        <p>${name}</p>
+        <h5>User Name :</h5>
+        <p>${userName}</p>
+        <h5>Designation :</h5>
+        <p>${designation}</p>
+        <h5>Email :</h5>
+        <p>${email}</p>
+        <h5>Phone :</h5>
+        <p>${phone}</p>
+        <div class="modal-details">${description}</div>`;
+
+  return modelInnerHtml;
 };
 
 export { searchHandler, keyUpHandler };

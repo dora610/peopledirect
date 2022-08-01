@@ -1,5 +1,6 @@
 package link.karurisuro.peopledirect.controllers;
 
+import link.karurisuro.peopledirect.dto.ContactDto;
 import link.karurisuro.peopledirect.entities.Contact;
 import link.karurisuro.peopledirect.entities.User;
 import link.karurisuro.peopledirect.helper.Message;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,8 +21,10 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -214,15 +216,16 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/api/contact")
-    public ResponseEntity<List<Contact>> searchContact(@RequestParam(name = "q") String searchStr, Principal principal) {
+    public ResponseEntity<Map<Long, String>> searchContact(@RequestParam(name = "q") String searchStr,
+            Principal principal) {
+        log.debug("search string: {}", searchStr);
+        Map<Long, String> contactMap = new HashMap<>();
         try {
-            List<Contact> contacts = contactService.searchContact(searchStr);
-            contacts.forEach(c -> c.setUser(null));
-            log.debug("contacts {}", contacts);
-            return ResponseEntity.ok().body(contacts);
+            contactService.searchContact(searchStr).forEach(c -> contactMap.put(c.getId(), c.getName()));        
+            return ResponseEntity.ok().body(contactMap);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().body(new ArrayList<>());
+            return ResponseEntity.badRequest().body(contactMap);
         }
     }
 

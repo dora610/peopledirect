@@ -7,6 +7,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Getter
 @Setter
@@ -36,5 +38,6 @@ public class Contact {
     @NotEmpty(message = "Please enter valid phone number")
     private String phone;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private User user;
 }

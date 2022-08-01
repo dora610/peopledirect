@@ -2,7 +2,11 @@ import BACKEND_API from "./backend.js";
 
 const viewContactHandler = (e) => {
   let id = e.target.dataset.index;
-  fetch(`${BACKEND_API}/user/view-contact/${id}`)
+  fetch(`${BACKEND_API}/user/view-contact/${id}`,{
+    headers:{
+      "Content-Type": "application/json"
+    }
+  })
     .then((resp) => {
     //   console.log(resp);
       return resp.json();
@@ -35,4 +39,4 @@ const generateModelBody = (contact) => {
   return modelInnerHtml;
 };
 
-export default viewContactHandler;
+export {viewContactHandler, generateModelBody};

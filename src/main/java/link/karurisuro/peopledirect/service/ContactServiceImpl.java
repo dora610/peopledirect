@@ -113,7 +113,6 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public List<Contact> searchContact(String searchStr) throws Exception{
-        log.debug(searchStr);
         if(searchStr.isBlank()){
             throw new Exception("Please enter valid search criteria");
         }

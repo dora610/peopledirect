@@ -1,5 +1,5 @@
 import fileUploadHandler from "./fileUpload.js";
-import viewContactHandler from "./viewContact.js";
+import {viewContactHandler} from "./viewContact.js";
 import deleteContactHandler from "./deleteContact.js";
 import { searchHandler, keyUpHandler } from "./searchHandler.js";
 
@@ -17,12 +17,13 @@ openBtn &&
     sidebar.classList.remove("sidebar-close");
   });
 
-const contactsRow = document.querySelector(".card-row");
+const contactsRow = document.querySelector(".view-details");
 contactsRow && contactsRow.addEventListener("click", viewContactHandler);
 
 const deleteBtn = document.querySelector(".modal-delete");
 deleteBtn && deleteBtn.addEventListener("click", deleteContactHandler, false);
 
+// add_contact_form.htrml
 const fileInput = document.querySelector(".custom-file-input");
 fileInput && fileInput.addEventListener("change", fileUploadHandler, false);
 
@@ -32,3 +33,6 @@ searchInput && searchInput.addEventListener("change", searchHandler);
 const searchBar = document.querySelector(".search-bar");
 searchBar &&
   searchBar.addEventListener("keyup", e=>keyUpHandler(e, searchInput));
+
+const searchDetail = document.querySelector(".view-contact-details")
+searchDetail && searchDetail.addEventListener("click", e => console.log(e.target)) 
